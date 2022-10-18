@@ -8,10 +8,11 @@ function Login(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
+    setIsLoading(true);
     props.onLogin({
       password,
       email
-    })
+    }).finally(() => setIsLoading(false));
   }
 
   function handleEmailChange(e) {

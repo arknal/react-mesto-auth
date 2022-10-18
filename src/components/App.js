@@ -105,7 +105,7 @@ function App() {
     setIsAuthorized(false);
   }
   function handleLogin(data) {
-    userApi
+    return userApi
       .login(data)
       .then((res) => {
         localStorage.setItem("token", res.token);
@@ -133,7 +133,7 @@ function App() {
   }
 
   function handleRegister(data) {
-    userApi
+    return userApi
     .register(data)
     .then((res) => {
       setInfoTooltipState({
