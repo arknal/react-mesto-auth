@@ -1,42 +1,21 @@
 import { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { userApi } from './../utils/UserApi';
+import { Link } from "react-router-dom";
 
-function Register({onPrompt, ...props}) {
+function Register({onRegister, ...props}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const history = useHistory();
-
   function handleSubmit(e) {
     setIsLoading(true);
     e.preventDefault();
-    userApi
-    .register({
+    onRegister({
       email,
       password,
     })
-    .then((res) => {
-      setIsLoading(false);
-      onPrompt({
-        isOpen: true,
-        status: true,
-        text: "Вы успешно зарегистрировались!",
-      });
-      setTimeout(() => {
-        history.push("/sign-in");
-      }, 1000);
-    })
-    .catch((e) => {
-      setIsLoading(false);
-      onPrompt({
-        isOpen: true,
-        status: false,
-        text: e === 400 ? "Некорректно заполнено одно из полей " : "Что-то пошло не так! Попробуйте ещё раз.",
-      });
-    });
+    .finally(() => setIsLoading(false))
+  
   }
   function handleEmailChange(e) {
     setEmail(e.target.value);
@@ -46,7 +25,7 @@ function Register({onPrompt, ...props}) {
   }
   return (
     <div className="login">
-      <form className="form" noValidate onSubmit={handleSubmit}>
+      <form className="form" onSubmit={handleSubmit}>
         <h2 className="form__title form__title_theme_dark form__title_text-align_center">
           Регистрация
         </h2>

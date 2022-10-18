@@ -1,6 +1,6 @@
 import { useState, useLayoutEffect } from "react";
 import { CurrentUserContext } from "./../contexts/CurrentUserContext";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 
 import { userApi } from "./../utils/UserApi";
 import { api } from "../utils/Api";
@@ -40,6 +40,8 @@ function App() {
       text: "",
     });
   const [selectedCard, setSelectedCard] = useState({});
+
+  const history = useHistory();
 
   function handleCardClick(card) {
     setSelectedCard(card);
@@ -84,15 +86,7 @@ function App() {
     api
       .deleteCard(card._id)
       .then(() => {
-        setCards((state) =>
-          state.filter((c) => {
-            if (c._id === card._id) {
-              return false;
-            } else {
-              return true;
-            }
-          })
-        );
+        setCards((state) => state.filter((c) => c._id === card._id));
       })
       .catch((e) => console.log(e));
   }
@@ -110,6 +104,56 @@ function App() {
     setCurrentUser({});
     setIsAuthorized(false);
   }
+  function handleLogin(data) {
+    userApi
+      .login(data)
+      .then((res) => {
+        localStorage.setItem("token", res.token);
+        setIsAuthorized(true);
+        setEmail(data.email);
+      })
+      .catch((e) => {
+        let errorMsg;
+        switch (e) {
+          case 400:
+            errorMsg = "Введены некорректные данные";
+            break;
+          case 401:
+            errorMsg = "Неправильный логин или пароль";
+            break;
+          default:
+            errorMsg = "Что-то пошло не так! Попробуйте ещё раз.";
+        }
+        setInfoTooltipState({
+          isOpen: true,
+          status: false,
+          text: errorMsg,
+        });
+      });
+  }
+
+  function handleRegister(data) {
+    userApi
+    .register(data)
+    .then((res) => {
+      setInfoTooltipState({
+        isOpen: true,
+        status: true,
+        text: "Вы успешно зарегистрировались!",
+      });
+      setTimeout(() => {
+        setInfoTooltipState({isOpen: false});
+        history.push("/sign-in");
+      }, 3000);
+    })
+    .catch((e) => {
+      setInfoTooltipState({
+        isOpen: true,
+        status: false,
+        text: e === 400 ? "Некорректно заполнено одно из полей " : "Что-то пошло не так! Попробуйте ещё раз.",
+      });
+    });
+  }
 
   useLayoutEffect(() => {
     if (localStorage.getItem("token")) {
@@ -121,7 +165,7 @@ function App() {
         })
         .catch((e) => {
           console.log(e);
-        })
+        });
     } else {
       setIsLoading(false);
     }
@@ -157,18 +201,14 @@ function App() {
       <Switch>
         <Route path="/sign-up">
           {!isAuthorized ? (
-            <Register onPrompt={setInfoTooltipState} />
+            <Register onRegister={handleRegister} />
           ) : (
             <Redirect to="/" />
           )}
         </Route>
         <Route path="/sign-in">
           {!isAuthorized ? (
-            <Login
-              onPrompt={setInfoTooltipState}
-              onAuth={setIsAuthorized}
-              onLogin={setEmail}
-            />
+            <Login onLogin={handleLogin} />
           ) : (
             <Redirect to="/" />
           )}

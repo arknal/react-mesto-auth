@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { userApi } from "./../utils/UserApi";
 
-function Login({ infoTooltipState, onPrompt, ...props }) {
+function Login({ onLogin, ...props }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -10,57 +9,10 @@ function Login({ infoTooltipState, onPrompt, ...props }) {
   function handleSubmit(e) {
     e.preventDefault();
     setIsLoading(true);
-    userApi
-      .login({
-        password,
-        email,
-      })
-      .then((res) => {
-        localStorage.setItem("token", res.token);
-        setIsLoading(false);
-        onPrompt({
-          isOpen: true,
-          status: true,
-          text: "Вы успешно авторизовались!",
-        });
-        props.onLogin(email)
-        setTimeout(() => {
-          onPrompt({
-            isOpen: false,
-            status: true,
-            text: "Вы успешно авторизовались!",
-          });
-          props.onAuth(true);
-        }, 1000);
-      })
-      .catch((e) => {
-        setIsLoading(false);
-        let errorMsg;
-        switch (e) {
-          case 400:
-            errorMsg = "Введены некорректные данные";
-            break;
-          case 401:
-            errorMsg = "Пользователь с таким email не найден";
-            break;
-          default:
-            errorMsg = "Что-то пошло не так! Попробуйте ещё раз.";
-        }
-        onPrompt({
-          isOpen: true,
-          status: false,
-          text: errorMsg,
-        });
-        setTimeout(
-          () =>
-            onPrompt({
-              isOpen: false,
-              status: false,
-              text: errorMsg,
-            }),
-          1000
-        );
-      });
+    onLogin({
+      password,
+      email
+    }).finally(() => setIsLoading(false));
   }
 
   function handleEmailChange(e) {
@@ -72,7 +24,7 @@ function Login({ infoTooltipState, onPrompt, ...props }) {
 
   return (
     <div className="login">
-      <form className="form" noValidate onSubmit={handleSubmit}>
+      <form className="form" onSubmit={handleSubmit}>
         <h2 className="form__title form__title_theme_dark form__title_text-align_center">
           Вход
         </h2>
