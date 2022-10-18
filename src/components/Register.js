@@ -8,13 +8,11 @@ function Register({onRegister, ...props}) {
   const [isLoading, setIsLoading] = useState(false);
 
   function handleSubmit(e) {
-    setIsLoading(true);
     e.preventDefault();
     onRegister({
       email,
       password,
     })
-    .finally(() => setIsLoading(false))
   
   }
   function handleEmailChange(e) {

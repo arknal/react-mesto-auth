@@ -1,18 +1,17 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-function Login({ onLogin, ...props }) {
+function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
-    setIsLoading(true);
-    onLogin({
+    props.onLogin({
       password,
       email
-    }).finally(() => setIsLoading(false));
+    })
   }
 
   function handleEmailChange(e) {
