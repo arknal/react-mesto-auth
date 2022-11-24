@@ -1,4 +1,4 @@
-import { token } from "./consts.js";
+const { REACT_APP_BASE_URL } = process.env;
 
 class Api {
   constructor({ baseUrl, headers }) {
@@ -40,7 +40,7 @@ class Api {
     return fetch(`${this._baseUrl}/cards/${id}`, {
       method: "DELETE",
       headers: this._headers,
-    }).then((res) => this._getResponseData(res));
+    }).then((res) => {this._getResponseData(res); console.log(res)});
   }
   addLike(id) {
     return fetch(`${this._baseUrl}/cards/${id}/likes`, {
@@ -66,9 +66,8 @@ class Api {
 }
 
 export const api = new Api({
-  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-48",
+  baseUrl: REACT_APP_BASE_URL,
   headers: {
-    authorization: token,
     "Content-Type": "application/json",
   },
 });

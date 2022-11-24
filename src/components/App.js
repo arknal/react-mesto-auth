@@ -2,8 +2,8 @@ import { useState, useLayoutEffect } from "react";
 import { CurrentUserContext } from "./../contexts/CurrentUserContext";
 import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 
-import { userApi } from "./../utils/UserApi";
-import { api } from "../utils/Api";
+import { userController } from '../controllers/userController';
+import { cardController } from '../controllers/cardController';
 
 import Header from "./Header.js";
 import Main from "./Main";
@@ -55,46 +55,46 @@ function App() {
   }
 
   function handleUpdateUser(info) {
-    api
+    userController
       .updateUserInfo(info)
-      .then((res) => {
-        setCurrentUser(res);
+      .then(({ user }) => {
+        setCurrentUser(user);
         closeAllPopups();
       })
       .catch((e) => console.log(e));
   }
   function handleUpdateAvatar(avatar) {
-    api
+    userController
       .updateUserAvatar(avatar)
-      .then((res) => {
-        setCurrentUser(res);
+      .then(({ user }) => {
+        setCurrentUser(user);
         closeAllPopups();
       })
       .catch((e) => console.log(e));
   }
   function handleCardLike(card) {
-    api
+    cardController
       .changeLikeStatus(card._id, card.isLiked)
-      .then((newCard) => {
+      .then((data) => {
         setCards((state) =>
-          state.map((c) => (c._id === card._id ? newCard : c))
+          state.map((c) => (c._id === card._id ? data.card : c))
         );
       })
       .catch((e) => console.log(e));
   }
   function handleCardDelete(card) {
-    api
+    cardController
       .deleteCard(card._id)
       .then(() => {
-        setCards((state) => state.filter((c) => c._id === card._id));
+        setCards((state) => state.filter((c) => !( c._id === card._id)));
       })
       .catch((e) => console.log(e));
   }
   function handleAddPlaceSubmit(card) {
-    api
+    cardController
       .addNewCard(card)
-      .then((newCard) => {
-        setCards([newCard, ...cards]);
+      .then((data) => {
+        setCards([data.card, ...cards]);
         closeAllPopups();
       })
       .catch((e) => console.log(e));
@@ -105,12 +105,18 @@ function App() {
     setIsAuthorized(false);
   }
   function handleLogin(data) {
-    return userApi
+    return userController
       .login(data)
       .then((res) => {
         localStorage.setItem("token", res.token);
         setIsAuthorized(true);
         setEmail(data.email);
+        userController.setHeader({ Authorization: `Bearer ${res.token}` });
+        userController.getUserInfo()
+          .then(({ user }) => {
+            setCurrentUser(user);
+          })
+          .catch(e => console.log(e))
       })
       .catch((e) => {
         let errorMsg;
@@ -133,7 +139,7 @@ function App() {
   }
 
   function handleRegister(data) {
-    return userApi
+    return userController
     .register(data)
     .then((res) => {
       setInfoTooltipState({
@@ -157,14 +163,16 @@ function App() {
 
   useLayoutEffect(() => {
     if (localStorage.getItem("token")) {
-      userApi
+      userController
         .checkToken(localStorage.getItem("token"))
-        .then(({ data }) => {
+        .then(({ user }) => {
+          console.log(user);
+          setCurrentUser({...user})
           setIsAuthorized(true);
-          setEmail(data.email);
+          setEmail(user.email);
         })
         .catch((e) => {
-          console.log(e);
+          setIsLoading(false);
         });
     } else {
       setIsLoading(false);
@@ -173,10 +181,10 @@ function App() {
   useLayoutEffect(() => {
     if (isAuthorized) {
       setIsLoading(true);
-      Promise.all([api.getUserInfo(), api.getInitialCards()])
-        .then(([userData, initialCards]) => {
-          setCards(initialCards);
-          setCurrentUser(userData);
+      cardController.getInitialCards()
+        .then(({cards}) => {
+          console.log(cards);
+          setCards(cards.reverse());
         })
         .catch((e) => console.log(e))
         .finally(() => setIsLoading(false));

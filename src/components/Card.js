@@ -12,7 +12,7 @@ const Card = ({
 }) => {
   const currentUser = useContext(CurrentUserContext);
 
-  const isOwn = currentUser._id === props.owner._id ? true : false;
+  const isOwn = currentUser._id === props.owner ? true : false;
   const isLiked = likes.some((account) => {
     return account._id === currentUser._id;
   });
@@ -20,7 +20,6 @@ const Card = ({
   const cardLikeButtonClassName = `card__like-btn ${
     isLiked && "card__like-btn_liked"
   }`;
-
   return (
     <article className="card">
       <img

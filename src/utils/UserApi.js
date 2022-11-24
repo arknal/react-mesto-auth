@@ -1,4 +1,4 @@
-import { BASE_URL } from "./consts";
+const { REACT_APP_BASE_URL } = process.env;
 
 export class UserApi {
   constructor({ baseUrl, headers }) {
@@ -34,7 +34,7 @@ export class UserApi {
 }
 
 export const userApi = new UserApi({
-  baseUrl: BASE_URL,
+  baseUrl: REACT_APP_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
