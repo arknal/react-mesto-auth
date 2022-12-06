@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import Card from "./Card.js";
 import { CurrentUserContext } from "./../contexts/CurrentUserContext";
+import { useSelector } from "react-redux";
 
 function Main({
   onEditProfile,
@@ -11,6 +12,7 @@ function Main({
   onCardLike,
   onCardDelete,
 }) {
+  const {info} = useSelector(state => state.user);
   const currentUser = useContext(CurrentUserContext);
   return (
     <main className="content">
@@ -20,7 +22,7 @@ function Main({
           onClick={() => onEditAvatar(true)}
         >
           <img
-            src={currentUser.avatar}
+            src={info.avatar}
             alt="Аватар"
             className="profile__avatar"
           />
@@ -28,14 +30,14 @@ function Main({
         </div>
         <div className="flex-container flex-container_direction_column profile__info">
           <div className="flex-container">
-            <h1 className="profile__name">{currentUser.name}</h1>
+            <h1 className="profile__name">{info.name}</h1>
             <button
               className="profile__edit-button"
               type="button"
               onClick={() => onEditProfile(true)}
             />
           </div>
-          <p className="profile__job">{currentUser.about}</p>
+          <p className="profile__job">{info.about}</p>
         </div>
         <button
           className="profile__add-button"

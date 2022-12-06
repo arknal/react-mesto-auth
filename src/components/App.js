@@ -1,44 +1,49 @@
-import { useState, useLayoutEffect } from "react";
-import { CurrentUserContext } from "./../contexts/CurrentUserContext";
-import { Route, Switch, Redirect, useHistory } from "react-router-dom";
+import { useState, useLayoutEffect, useEffect } from 'react';
+import { CurrentUserContext } from 'contexts/CurrentUserContext';
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 
-import { userController } from '../controllers/userController';
+import userController from 'controllers/userController';
 import { cardController } from '../controllers/cardController';
 
-import Header from "./Header.js";
-import Main from "./Main";
-import Footer from "./Footer";
-import Loader from "./Loader";
+import Header from './Header.js';
+import Main from './Main';
+import Footer from './Footer';
+import Loader from './Loader';
 
-import PopupWithForm from "./PopupWithForm.js";
-import ImagePopup from "./ImagePopup";
-import EditProfilePopup from "./EditProfilePopup";
-import EditAvatarPopup from "./EditAvatarPopup.js";
-import AddPlacePopup from "./AddPlacePopup";
+import PopupWithForm from './PopupWithForm.js';
+import ImagePopup from './ImagePopup';
+import EditProfilePopup from './EditProfilePopup';
+import EditAvatarPopup from './EditAvatarPopup.js';
+import AddPlacePopup from './AddPlacePopup';
 
-import Register from "./Register.js";
-import Login from "./Login.js";
-import ProtectedRoute from "./ProtectedRoute.js";
+import Register from './Register.js';
+import Login from './Login.js';
+import ProtectedRoute from './ProtectedRoute.js';
 
-import InfoTooltip from "./InfoTooltip";
+import InfoTooltip from './InfoTooltip';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserInfo } from 'redux/store/user/user.actions.js';
 
 function App() {
+  const dispatch = useDispatch();
+  const {isAuthorized} = useSelector(state => state.user);
+
+  useLayoutEffect(() => {
+    dispatch(getUserInfo());
+    setIsLoading(false);
+  }, [])
+
   const [isLoading, setIsLoading] = useState(true);
-  const [isAuthorized, setIsAuthorized] = useState(false);
 
   const [currentUser, setCurrentUser] = useState({});
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
 
   const [cards, setCards] = useState([]);
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false),
     [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false),
-    [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false),
-    [infoTooltipState, setInfoTooltipState] = useState({
-      isOpen: false,
-      status: false,
-      text: "",
-    });
+    [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  
   const [selectedCard, setSelectedCard] = useState({});
 
   const history = useHistory();
@@ -86,7 +91,7 @@ function App() {
     cardController
       .deleteCard(card._id)
       .then(() => {
-        setCards((state) => state.filter((c) => !( c._id === card._id)));
+        setCards((state) => state.filter((c) => !(c._id === card._id)));
       })
       .catch((e) => console.log(e));
   }
@@ -102,103 +107,104 @@ function App() {
   function handleSignout() {
     localStorage.clear();
     setCurrentUser({});
-    setIsAuthorized(false);
   }
   function handleLogin(data) {
     return userController
       .login(data)
       .then((res) => {
-        localStorage.setItem("token", res.token);
-        setIsAuthorized(true);
+        localStorage.setItem('token', res.token);
         setEmail(data.email);
         userController.setHeader({ Authorization: `Bearer ${res.token}` });
-        userController.getUserInfo()
+        userController
+          .getUserInfo()
           .then(({ user }) => {
             setCurrentUser(user);
           })
-          .catch(e => console.log(e))
+          .catch((e) => console.log(e));
       })
       .catch((e) => {
         let errorMsg;
         switch (e) {
           case 400:
-            errorMsg = "Введены некорректные данные";
+            errorMsg = 'Введены некорректные данные';
             break;
           case 401:
-            errorMsg = "Неправильный логин или пароль";
+            errorMsg = 'Неправильный логин или пароль';
             break;
           default:
-            errorMsg = "Что-то пошло не так! Попробуйте ещё раз.";
+            errorMsg = 'Что-то пошло не так! Попробуйте ещё раз.';
         }
-        setInfoTooltipState({
-          isOpen: true,
-          status: false,
-          text: errorMsg,
-        });
+        // setInfoTooltipState({
+        //   isOpen: true,
+        //   status: false,
+        //   text: errorMsg,
+        // });
       });
   }
 
   function handleRegister(data) {
     return userController
-    .register(data)
-    .then((res) => {
-      setInfoTooltipState({
-        isOpen: true,
-        status: true,
-        text: "Вы успешно зарегистрировались!",
+      .register(data)
+      .then((res) => {
+        // setInfoTooltipState({
+        //   isOpen: true,
+        //   status: true,
+        //   text: 'Вы успешно зарегистрировались!',
+        // });
+        setTimeout(() => {
+          // setInfoTooltipState({ isOpen: false });
+          history.push('/sign-in');
+        }, 3000);
+      })
+      .catch((e) => {
+        // setInfoTooltipState({
+        //   isOpen: true,
+        //   status: false,
+        //   text:
+        //     e === 400
+        //       ? 'Некорректно заполнено одно из полей '
+        //       : 'Что-то пошло не так! Попробуйте ещё раз.',
+        // });
       });
-      setTimeout(() => {
-        setInfoTooltipState({isOpen: false});
-        history.push("/sign-in");
-      }, 3000);
-    })
-    .catch((e) => {
-      setInfoTooltipState({
-        isOpen: true,
-        status: false,
-        text: e === 400 ? "Некорректно заполнено одно из полей " : "Что-то пошло не так! Попробуйте ещё раз.",
-      });
-    });
   }
 
-  useLayoutEffect(() => {
-    if (localStorage.getItem("token")) {
-      userController
-        .checkToken(localStorage.getItem("token"))
-        .then(({ user }) => {
-          console.log(user);
-          setCurrentUser({...user})
-          setIsAuthorized(true);
-          setEmail(user.email);
-        })
-        .catch((e) => {
-          setIsLoading(false);
-        });
-    } else {
-      setIsLoading(false);
-    }
-  }, []);
-  useLayoutEffect(() => {
-    if (isAuthorized) {
-      setIsLoading(true);
-      cardController.getInitialCards()
-        .then(({cards}) => {
-          console.log(cards);
-          setCards(cards.reverse());
-        })
-        .catch((e) => console.log(e))
-        .finally(() => setIsLoading(false));
-    }
-  }, [isAuthorized]);
+  // useLayoutEffect(() => {
+  //   if (localStorage.getItem('token')) {
+  //     userController
+  //       .getUserInfo()
+  //       .then(({ user }) => {
+  //         setCurrentUser({ ...user });
+  //         setIsAuthorized(true);
+  //         setEmail(user.email);
+  //       })
+  //       .catch((e) => {
+  //         setIsLoading(false);
+  //       });
+  //   } else {
+  //     setIsLoading(false);
+  //   }
+  // }, []);
+  // useLayoutEffect(() => {
+  //   if (isAuthorized) {
+  //     setIsLoading(true);
+  //     cardController
+  //       .getInitialCards()
+  //       .then(({ cards }) => {
+  //         setCards(cards.reverse());
+  //       })
+  //       .catch((e) => console.log(e))
+  //       .finally(() => setIsLoading(false));
+  //   }
+  // }, [isAuthorized]);
 
   return isLoading ? (
     <div
       style={{
-        position: "absolute",
-        top: "0",
-        bottom: "0",
-        right: "0",
-        left: "0",
+        position: 'absolute',
+        top: '0',
+        bottom: '0',
+        right: '0',
+        left: '0',
       }}
     >
       <Loader />
@@ -207,21 +213,21 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <Header onSignout={handleSignout} email={email} />
       <Switch>
-        <Route path="/sign-up">
+        <Route path='/sign-up'>
           {!isAuthorized ? (
             <Register onRegister={handleRegister} />
           ) : (
-            <Redirect to="/" />
+            <Redirect to='/' />
           )}
         </Route>
-        <Route path="/sign-in">
+        <Route path='/sign-in'>
           {!isAuthorized ? (
             <Login onLogin={handleLogin} />
           ) : (
-            <Redirect to="/" />
+            <Redirect to='/' />
           )}
         </Route>
-        <ProtectedRoute exact path="/" loggedIn={isAuthorized}>
+        <ProtectedRoute exact path='/' loggedIn={isAuthorized}>
           <Main
             onAddPlace={setIsAddPlacePopupOpen}
             onEditAvatar={setIsEditAvatarPopupOpen}
@@ -254,18 +260,19 @@ function App() {
           />
 
           <PopupWithForm
-            title="Вы&nbsp;уверены?"
-            name="confirmation"
-            confirmBtnText="Да"
+            title='Вы&nbsp;уверены?'
+            name='confirmation'
+            confirmBtnText='Да'
           />
 
           <ImagePopup card={selectedCard} onClose={closeAllPopups} />
         </ProtectedRoute>
-        <Route path="*">
-          <Redirect to={isAuthorized ? "/" : "/sign-in"} />
+        <Route path='*'>
+          <Redirect to={isAuthorized ? '/' : '/sign-in'} />
         </Route>
       </Switch>
-      <InfoTooltip state={infoTooltipState} onClose={setInfoTooltipState} />
+        
+      <InfoTooltip />
     </CurrentUserContext.Provider>
   );
 }
