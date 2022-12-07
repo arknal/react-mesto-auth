@@ -44,7 +44,8 @@ function Main({
         />
       </section>
       <section className="gallery" ariadiv="Секция с картинками">
-        {cards.map((item) => {
+        {
+          cards.map((item) => {
           return (
             <Card
               {...item}
@@ -54,7 +55,8 @@ function Main({
               onCardDelete={onCardDelete}
             />
           );
-        })}
+          })
+      }
       </section>
     </main>
   );

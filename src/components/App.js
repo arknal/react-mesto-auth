@@ -111,7 +111,6 @@ function App() {
         localStorage.setItem("token", res.token);
         setIsAuthorized(true);
         setEmail(data.email);
-        userController.setHeader({ Authorization: `Bearer ${res.token}` });
         userController.getUserInfo()
           .then(({ user }) => {
             setCurrentUser(user);
@@ -119,6 +118,7 @@ function App() {
           .catch(e => console.log(e))
       })
       .catch((e) => {
+        console.log(e);
         let errorMsg;
         switch (e) {
           case 400:
@@ -166,7 +166,6 @@ function App() {
       userController
         .checkToken(localStorage.getItem("token"))
         .then(({ user }) => {
-          console.log(user);
           setCurrentUser({...user})
           setIsAuthorized(true);
           setEmail(user.email);
@@ -183,7 +182,6 @@ function App() {
       setIsLoading(true);
       cardController.getInitialCards()
         .then(({cards}) => {
-          console.log(cards);
           setCards(cards.reverse());
         })
         .catch((e) => console.log(e))

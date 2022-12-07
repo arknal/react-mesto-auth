@@ -5,6 +5,7 @@
   background-color: #000;
   max-width: 880px;
   min-width: 320px;
+  font-family: 'Inter', sans-serif;
 }
 @media (max-width: 680px) {
   .page {
