@@ -1,11 +1,11 @@
 import axios from "axios";
 
 const $host = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL | 'http://localhost:3000'
+  baseURL: process.env.REACT_APP_BASE_URL | 'http://api.arknal.nomoredomains.club'
 })
 
 const $authHost = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL | 'https://localhost:3000'
+  baseURL: process.env.REACT_APP_BASE_URL | 'https://api.arknal.nomoredomains.club'
 })
 
 const authInterceptor = config => {
