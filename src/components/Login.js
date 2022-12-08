@@ -23,7 +23,6 @@ function Login(props) {
       })
       .catch((e) => dispatch(show(getMessageByError(e))))
       .finally(() => setIsComponentLoading(false));
-    dispatch(setIsLoading(true))
   }
 
   function handleEmailChange(e) {
