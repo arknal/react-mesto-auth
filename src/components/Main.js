@@ -2,11 +2,10 @@ import Card from "./Card.js";
 import { useDispatch, useSelector } from "react-redux";
 import { appLoaderSelector, cardsSelector, userSelector } from "redux/selectors.js";
 import { useLayoutEffect } from "react";
-import { setIsLoading } from "redux/store/app/app.slice.js";
+import { popupService } from "../services/popupService.js";
 
 function Main(props) {
   const info = useSelector(userSelector);
-  const appLoadingState = useSelector(appLoaderSelector);
   const dispatch = useDispatch();
   // useLayoutEffect(() => {
   //   if (isAuthorized) {
@@ -27,6 +26,7 @@ function Main(props) {
       <section className="profile">
         <div
           className="profile__avatar-container"
+          onClick={() => popupService.showEditAvatarPopup(dispatch)}
         >
           <img
             src={info.avatar}
@@ -41,6 +41,7 @@ function Main(props) {
             <button
               className="profile__edit-button"
               type="button"
+              onClick={() => popupService.showEditProfilePopup(dispatch)}
             />
           </div>
           <p className="profile__job">{info.about}</p>
@@ -48,6 +49,7 @@ function Main(props) {
         <button
           className="profile__add-button"
           type="button"
+          onClick={() => popupService.showAddPlacePopup(dispatch)}
         />
       </section>
       <section className="gallery" ariadiv="Секция с картинками">

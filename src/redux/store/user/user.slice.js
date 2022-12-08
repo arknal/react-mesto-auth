@@ -9,7 +9,6 @@ export const userSlice = createSlice({
   },
   reducers: {
     logoutAction: (state) => {
-      console.log('logout action')
       state.info = {};
     },
   },

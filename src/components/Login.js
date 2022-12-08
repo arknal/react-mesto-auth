@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setIsLoading } from 'redux/store/app/app.slice';
 import { show } from 'redux/store/infotooltip/infotooltip.slice';
 import { authService } from 'services/authService';
 import { userService } from 'services/userService';

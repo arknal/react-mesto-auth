@@ -1,5 +1,5 @@
 import { useLayoutEffect } from 'react';
-import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 import Header from './Header.js';
 import Main from './Main';
@@ -20,19 +20,11 @@ import InfoTooltip from './InfoTooltip';
 import { useDispatch, useSelector } from 'react-redux';
 import { userService } from 'services/userService';
 import { appLoaderSelector, userSelector } from 'redux/selectors';
-import { setIsLoading } from 'redux/store/app/app.slice.js';
 
 function App() {
   const dispatch = useDispatch();
   const user = useSelector(userSelector);
   const appLoader = useSelector(appLoaderSelector);
-  // const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false),
-  //   [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false),
-  //   [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-
-  // const [selectedCard, setSelectedCard] = useState({});
-
-  const history = useHistory();
 
   // function handleCardClick(card) {
   //   setSelectedCard(card);
@@ -118,31 +110,17 @@ function App() {
 
           <Footer state={user.info} />
 
-          {/* <EditProfilePopup
-            onClose={closeAllPopups}
-            isOpen={isEditProfilePopupOpen}
-            onUpdateUser={handleUpdateUser}
-          />
-
-          <AddPlacePopup
-            onClose={closeAllPopups}
-            isOpen={isAddPlacePopupOpen}
-            onAddPlace={handleAddPlaceSubmit}
-          />
-
-          <EditAvatarPopup
-            isOpen={isEditAvatarPopupOpen}
-            onClose={closeAllPopups}
-            onUpdateAvatar={handleUpdateAvatar}
-          />
-
+          
+          <EditProfilePopup />
+          <AddPlacePopup />
+          <EditAvatarPopup />
           <PopupWithForm
             title='Вы&nbsp;уверены?'
             name='confirmation'
             confirmBtnText='Да'
           />
 
-          <ImagePopup card={selectedCard} onClose={closeAllPopups} /> */}
+          <ImagePopup />
         </ProtectedRoute>
         <Route path='*'>
           <Redirect to={user._id ? '/' : '/sign-in'} />
