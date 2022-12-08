@@ -1,10 +1,10 @@
-import { useContext } from "react";
+import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-import { CurrentUserContext } from "./../contexts/CurrentUserContext";
+import { userSelector } from "redux/selectors";
 import Menu from "./Menu";
 
 function ProtectedMenu(props) {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useSelector(userSelector);
   const location = useLocation();
 
   const config = {};

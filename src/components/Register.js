@@ -1,7 +1,12 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { show } from 'redux/store/infotooltip/infotooltip.slice';
+import { authService } from 'services/authService';
 
-function Register({ onRegister, ...props }) {
+function Register(props) {
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -10,10 +15,9 @@ function Register({ onRegister, ...props }) {
   function handleSubmit(e) {
     setIsLoading(true);
     e.preventDefault();
-    onRegister({
-      email,
-      password,
-    }).finally(() => setIsLoading(false));
+    authService.register({ email, password})
+      .then(() => dispatch(show({ status: true, message: "Вы успешно зарегистрировались!"})))
+      .finally(() => setIsLoading(false));
   }
 
   function handleEmailChange(e) {
@@ -23,7 +27,7 @@ function Register({ onRegister, ...props }) {
   function handlePasswordChange(e) {
     setPassword(e.target.value);
   }
-  
+
   return (
     <div className='login'>
       <form className='form' onSubmit={handleSubmit}>

@@ -1,30 +1,32 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { userService } from 'services/userService';
 
+
 export const userSlice = createSlice({
   name: 'user',
   initialState: {
-    isAuthorized: false,
-    info: {},
+    info: {}
   },
   reducers: {
-    setIsAuthorized: (state, action) => {
-      state.isAuthorized = action.payload;
-    }
+    logoutAction: (state) => {
+      console.log('logout action')
+      state.info = {};
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(userService.getUserInfo.fulfilled, (state, action) => {
-        state.info = action.payload.user;
+        const { user } = action.payload
+        state.info = user;
       })
       .addCase(userService.updateUserInfo.fulfilled, (state, action) => {
-        state.info = { ...state.info, ...action.payload.user };
+        state.info = { ...state, ...action.payload.user };
       })
       .addCase(userService.updateUserAvatar.fulfilled, (state, action) => {
-        state.info = { ...state.info, ...action.payload.user };
+        state.info = { ...state, ...action.payload.user };
       });
   },
 });
 
 export default userSlice.reducer;
-export const { setIsAuthorized } = userSlice.actions;
+export const { logoutAction } = userSlice.actions;

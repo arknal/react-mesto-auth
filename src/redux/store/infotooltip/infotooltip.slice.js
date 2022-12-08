@@ -9,7 +9,9 @@ export const infotooltipSlice = createSlice({
   },
   reducers: {
     show: (state, action) => {
-      state = action.payload;
+      state.isVisible = true;
+      state.status = action.payload.status;
+      state.message = action.payload.message;
     },
     hide: (state) => {
       state.isVisible = false;

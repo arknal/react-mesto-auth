@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 const Card = ({
   name,
@@ -10,7 +9,7 @@ const Card = ({
   onCardDelete,
   ...props
 }) => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = {}
 
   const isOwn = currentUser._id === props.owner ? true : false;
   const isLiked = likes.some((account) => {

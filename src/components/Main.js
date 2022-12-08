@@ -1,25 +1,32 @@
-import { useContext } from "react";
 import Card from "./Card.js";
-import { CurrentUserContext } from "./../contexts/CurrentUserContext";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { appLoaderSelector, cardsSelector, userSelector } from "redux/selectors.js";
+import { useLayoutEffect } from "react";
+import { setIsLoading } from "redux/store/app/app.slice.js";
 
-function Main({
-  onEditProfile,
-  onAddPlace,
-  onEditAvatar,
-  handleCardClick,
-  cards,
-  onCardLike,
-  onCardDelete,
-}) {
-  const {info} = useSelector(state => state.user);
-  const currentUser = useContext(CurrentUserContext);
+function Main(props) {
+  const info = useSelector(userSelector);
+  const appLoadingState = useSelector(appLoaderSelector);
+  const dispatch = useDispatch();
+  // useLayoutEffect(() => {
+  //   if (isAuthorized) {
+  //     setIsLoading(true);
+  //     cardController
+  //       .getInitialCards()
+  //       .then(({ cards }) => {
+  //         setCards(cards.reverse());
+  //       })
+  //       .catch((e) => console.log(e))
+  //       .finally(() => setIsLoading(false));
+  //   }
+  // }, []);
+
+  const { serviceCards, userCards } = useSelector(cardsSelector);
   return (
     <main className="content">
       <section className="profile">
         <div
           className="profile__avatar-container"
-          onClick={() => onEditAvatar(true)}
         >
           <img
             src={info.avatar}
@@ -34,7 +41,6 @@ function Main({
             <button
               className="profile__edit-button"
               type="button"
-              onClick={() => onEditProfile(true)}
             />
           </div>
           <p className="profile__job">{info.about}</p>
@@ -42,18 +48,14 @@ function Main({
         <button
           className="profile__add-button"
           type="button"
-          onClick={() => onAddPlace(true)}
         />
       </section>
       <section className="gallery" ariadiv="Секция с картинками">
-        {cards.map((item) => {
+        {serviceCards.map((item) => {
           return (
             <Card
               {...item}
               key={item._id}
-              onCardClick={handleCardClick}
-              onCardLike={onCardLike}
-              onCardDelete={onCardDelete}
             />
           );
         })}
