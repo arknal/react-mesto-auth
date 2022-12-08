@@ -21,20 +21,11 @@ import Login from './Login.js';
 import ProtectedRoute from './ProtectedRoute.js';
 
 import InfoTooltip from './InfoTooltip';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUserInfo } from 'redux/store/user/user.actions.js';
 
 function App() {
-  const dispatch = useDispatch();
-  const {isAuthorized} = useSelector(state => state.user);
-
-  useLayoutEffect(() => {
-    dispatch(getUserInfo());
-    setIsLoading(false);
-  }, [])
 
   const [isLoading, setIsLoading] = useState(true);
-
+  const [isAuthorized, setIsAuthorized] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [email, setEmail] = useState('');
 
