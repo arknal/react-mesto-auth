@@ -7,8 +7,6 @@ function PopupWithForm({
   name,
   children,
   onSubmit,
-  isOpen,
-  onClose,
   confirmBtnText = 'Сохранить',
 }) {
   const currentPopup = useSelector(currentPopupSelector);
