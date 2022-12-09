@@ -28,7 +28,7 @@ const Card = ({
         onClick={() => onCardClick({ name, link })}
       />
       <div className="flex-container card__info">
-        <h2 className="card__title" onClick={() => console.log(props)}>
+        <h2 className="card__title">
           {name}
         </h2>
         {isOwn && (

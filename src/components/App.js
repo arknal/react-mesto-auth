@@ -65,16 +65,8 @@ function App() {
   //       setCards((state) => state.filter((c) => !(c._id === card._id)));
   //     })
   //     .catch((e) => console.log(e));
-  // }
-  // function handleAddPlaceSubmit(card) {
-  //   cardController
-  //     .addNewCard(card)
-  //     .then((data) => {
-  //       setCards([data.card, ...cards]);
-  //       closeAllPopups();
-  //     })
-  //     .catch((e) => console.log(e));
-  // }
+  // }ы
+
   useLayoutEffect(() => {
     (async function () {
       await dispatch(userService.getUserInfo());

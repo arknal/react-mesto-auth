@@ -3,22 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { appLoaderSelector, cardsSelector, userSelector } from "redux/selectors.js";
 import { useLayoutEffect } from "react";
 import { popupService } from "../services/popupService.js";
+import { cardService } from "services/cardService.js";
 
 function Main(props) {
   const info = useSelector(userSelector);
   const dispatch = useDispatch();
-  // useLayoutEffect(() => {
-  //   if (isAuthorized) {
-  //     setIsLoading(true);
-  //     cardController
-  //       .getInitialCards()
-  //       .then(({ cards }) => {
-  //         setCards(cards.reverse());
-  //       })
-  //       .catch((e) => console.log(e))
-  //       .finally(() => setIsLoading(false));
-  //   }
-  // }, []);
+  useLayoutEffect(() => {
+    dispatch(cardService.getInitialCards())
+  }, []);
 
   const { serviceCards, userCards } = useSelector(cardsSelector);
   return (
