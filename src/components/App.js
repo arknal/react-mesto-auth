@@ -19,76 +19,20 @@ import ProtectedRoute from './ProtectedRoute.js';
 import InfoTooltip from './InfoTooltip';
 import { useDispatch, useSelector } from 'react-redux';
 import { userService } from 'services/userService';
-import { appLoaderSelector, userSelector } from 'redux/selectors';
+import { getUserInfoStateSelector, userSelector } from 'redux/selectors';
 
 function App() {
   const dispatch = useDispatch();
   const user = useSelector(userSelector);
-  const appLoader = useSelector(appLoaderSelector);
-
-  // function handleCardClick(card) {
-  //   setSelectedCard(card);
-  // }
-
-  // function handleUpdateUser(info) {
-  //   userController
-  //     .updateUserInfo(info)
-  //     .then(({ user }) => {
-  //       setCurrentUser(user);
-  //       closeAllPopups();
-  //     })
-  //     .catch((e) => console.log(e));
-  // }
-  // function handleUpdateAvatar(avatar) {
-  //   userController
-  //     .updateUserAvatar(avatar)
-  //     .then(({ user }) => {
-  //       setCurrentUser(user);
-  //       closeAllPopups();
-  //     })
-  //     .catch((e) => console.log(e));
-  // }
-  // function handleCardLike(card) {
-  //   cardController
-  //     .changeLikeStatus(card._id, card.isLiked)
-  //     .then((data) => {
-  //       setCards((state) =>
-  //         state.map((c) => (c._id === card._id ? data.card : c))
-  //       );
-  //     })
-  //     .catch((e) => console.log(e));
-  // }
-  // function handleCardDelete(card) {
-  //   cardController
-  //     .deleteCard(card._id)
-  //     .then(() => {
-  //       setCards((state) => state.filter((c) => !(c._id === card._id)));
-  //     })
-  //     .catch((e) => console.log(e));
-  // }ы
+  const appLoader = useSelector(getUserInfoStateSelector);
 
   useLayoutEffect(() => {
-    (async function () {
-      await dispatch(userService.getUserInfo());
-    })();
+    dispatch(userService.getUserInfo());
   }, []);
 
   return (
     <>
-      <div
-        style={{
-          position: 'absolute',
-          top: '0',
-          bottom: '0',
-          right: '0',
-          left: '0',
-          zIndex: '1',
-          display: `${ appLoader ? 'block' : 'none'}`,
-          backgroundColor: '#000'
-        }}
-      >
-        <Loader />
-      </div>
+      {appLoader && <Loader />} 
       <Header />
       <Switch>
         <Route path='/sign-up'>
@@ -102,7 +46,6 @@ function App() {
 
           <Footer state={user.info} />
 
-          
           <EditProfilePopup />
           <AddPlacePopup />
           <EditAvatarPopup />

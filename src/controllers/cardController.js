@@ -13,7 +13,7 @@ export const cardController = {
   
  deleteCard(id) {
   return $authHost.delete(`/cards/${id}`)
-    .then(this.getResponseData);
+    .then(() => id);
 },
   
  addLike(id) {

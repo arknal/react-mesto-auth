@@ -18,9 +18,15 @@ export const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(userService.getUserInfo.pending, (state, action) => {
+        state.isLoading.getUserInfoState = true;
+      })
       .addCase(userService.getUserInfo.fulfilled, (state, action) => {
-        const { user } = action.payload;
-        state.info = user;
+        state.info = action.payload.user;
+        state.isLoading.getUserInfoState = false;
+      })
+      .addCase(userService.getUserInfo.rejected, (state, action) => {
+        state.isLoading.getUserInfoState = false;
       })
       .addCase(userService.updateUserInfo.pending, (state, action) => {
         state.isLoading.updateUserInfoState = true;

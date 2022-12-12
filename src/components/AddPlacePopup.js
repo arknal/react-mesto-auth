@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { cardService } from 'services/cardService';
+import { closePopup } from 'redux/store/app/app.slice';
 import PopupWithForm from './PopupWithForm';
 
 function AddPlacePopup() {
@@ -17,6 +18,9 @@ function AddPlacePopup() {
   function handleSubmit(e) {
     e.preventDefault();
     dispatch(cardService.addNewCard({ name, link }));
+    dispatch(closePopup());
+    setLink('');
+    setName('');
   }
   return (
     <PopupWithForm

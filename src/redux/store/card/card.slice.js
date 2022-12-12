@@ -23,7 +23,7 @@ export const cardSlice = createSlice({
       })
       .addCase(cardService.deleteCard.fulfilled, (state, action) => {
         state.userCards.filter((c) => !(c._id === action.payload));
-        state.serviceCards.filter((c) => !(c._id === action.payload));
+        state.serviceCards = state.serviceCards.filter((c) => !(c._id === action.payload));
       })
       .addCase(cardService.getInitialCards.pending, (state, action) => {
         state.isLoading.getInitialCardsState = true;
@@ -31,7 +31,10 @@ export const cardSlice = createSlice({
       .addCase(cardService.getInitialCards.fulfilled, (state, action) => {
         state.serviceCards = [...action.payload.cards];
         state.isLoading.getInitialCardsState = false;
-      });
+      })
+      .addCase(cardService.toggleLike.fulfilled, (state, action) => {
+        state.serviceCards = state.serviceCards.map((c) => (c._id === action.payload.card._id ? action.payload.card : c))
+      })
   },
 });
 

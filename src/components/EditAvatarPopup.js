@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserAvatarStateSelector } from "redux/selectors";
+import { closePopup } from "redux/store/app/app.slice";
 import { userService } from "services/userService";
 import PopupWithForm from "./PopupWithForm";
 
@@ -11,6 +12,8 @@ function EditAvatarPopup(props) {
   function handleSubmit(e) {
     e.preventDefault();
     dispatch(userService.updateUserAvatar({ avatar: avatarRef.current.value }));
+    dispatch(closePopup());
+    avatarRef.current.value = ''
   }
   return (
     <PopupWithForm

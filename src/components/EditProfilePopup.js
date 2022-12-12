@@ -1,11 +1,11 @@
 import PopupWithForm from "./PopupWithForm";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUserInfoSelector, userSelector } from "redux/selectors";
+import { updateUserInfoStateSelector, userSelector } from "redux/selectors";
 import { userService } from "services/userService";
 
 function EditProfilePopup(props) {
-  const isLoading = useSelector(updateUserInfoSelector);
+  const isLoading = useSelector(updateUserInfoStateSelector);
   const currentUser = useSelector(userSelector);
   const dispatch = useDispatch();
 

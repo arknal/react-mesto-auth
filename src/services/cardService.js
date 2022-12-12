@@ -11,10 +11,7 @@ export const cardService = {
   deleteCard: createAsyncThunk('card/deleteCard', function (id) {
     return cardController.deleteCard(id);
   }),
-  addLike: createAsyncThunk('card/addLike', function (id) {
-    return cardController.addLike(id);
-  }),
-  removeLike: createAsyncThunk('card/removeLike', function (id) {
-    return cardController.removeLike(id);
+  toggleLike: createAsyncThunk('card/toggleLike', function ({_id, isLiked}) {
+    return cardController.changeLikeStatus(_id, isLiked);
   }),
 };
