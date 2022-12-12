@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { cardService } from 'services/cardService';
 import PopupWithForm from './PopupWithForm';
@@ -18,15 +18,6 @@ function AddPlacePopup() {
     e.preventDefault();
     dispatch(cardService.addNewCard({ name, link }));
   }
-  // function handleAddPlaceSubmit(card) {
-  //   cardController
-  //     .addNewCard(card)
-  //     .then((data) => {
-  //       setCards([data.card, ...cards]);
-  //       closeAllPopups();
-  //     })
-  //     .catch((e) => console.log(e));
-  // }
   return (
     <PopupWithForm
       title='Новое место'

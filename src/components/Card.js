@@ -1,15 +1,13 @@
-import { useContext } from "react";
+import { useSelector } from "react-redux";
+import { userSelector } from "redux/selectors";
 
 const Card = ({
   name,
   link,
   likes,
-  onCardClick,
-  onCardLike,
-  onCardDelete,
   ...props
 }) => {
-  const currentUser = {}
+  const currentUser = useSelector(userSelector);
 
   const isOwn = currentUser._id === props.owner ? true : false;
   const isLiked = likes.some((account) => {
@@ -25,7 +23,6 @@ const Card = ({
         src={link}
         alt={name}
         className="card__image"
-        onClick={() => onCardClick({ name, link })}
       />
       <div className="flex-container card__info">
         <h2 className="card__title">
@@ -34,14 +31,12 @@ const Card = ({
         {isOwn && (
           <button
             className="card__trash-btn"
-            onClick={() => onCardDelete(props)}
           />
         )}
         <div className="flex-container flex-container_direction_column">
           <button
             className={cardLikeButtonClassName}
             type="button"
-            onClick={() => onCardLike({ isLiked, ...props })}
           />
           <span className="card__likes-counter">{likes.length}</span>
         </div>

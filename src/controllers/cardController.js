@@ -1,44 +1,39 @@
 import { $authHost } from '../utils/httpConfig';
 
-function getInitialCards() {
+export const cardController = {
+   getInitialCards() {
     return $authHost.get('/cards')
-      .then(getResponseData);
-}
+      .then(this.getResponseData);
+},
   
-function addNewCard(props) {
+ addNewCard(props) {
   return $authHost.post('/cards', props)
-    .then(getResponseData);
-}
+    .then(this.getResponseData);
+},
   
-function deleteCard(id) {
+ deleteCard(id) {
   return $authHost.delete(`/cards/${id}`)
-    .then(getResponseData);
-}
+    .then(this.getResponseData);
+},
   
-function addLike(id) {
+ addLike(id) {
   return $authHost.put(`/cards/${id}/likes`)
-    .then(getResponseData);
-}
+    .then(this.getResponseData);
+},
   
-function removeLike(id) {
+ removeLike(id) {
   return $authHost.delete(`/cards/${id}/likes`)
-    .then(getResponseData);
-}
+    .then(this.getResponseData);
+},
   
-function changeLikeStatus(id, isLiked) {
-    return isLiked ? removeLike(id) : addLike(id);
-}
+ changeLikeStatus(id, isLiked) {
+    return isLiked ? this.removeLike(id) : this.addLike(id);
+},
   
-function getResponseData(res) {
+ getResponseData(res) {
   if (!(res.statusText === 'OK')) {
     return Promise.reject(res.data.message);
   }
   return res.data;
+  }
 }
-
-export const cardController = {
-  getInitialCards,
-  addNewCard,
-  deleteCard,
-  changeLikeStatus
-};

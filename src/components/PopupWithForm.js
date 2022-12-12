@@ -7,6 +7,8 @@ function PopupWithForm({
   name,
   children,
   onSubmit,
+  loadingState,
+  loadingText,
   confirmBtnText = 'Сохранить',
 }) {
   const currentPopup = useSelector(currentPopupSelector);
@@ -27,7 +29,7 @@ function PopupWithForm({
           <h2 className='form__title'>{title}</h2>
           {children}
           <button className='form__submit-btn' type='submit'>
-            {confirmBtnText}
+            {loadingState ? loadingText : confirmBtnText}
           </button>
         </form>
         <button className='popup__close-btn' onClick={() => dispatch(closePopup())} />

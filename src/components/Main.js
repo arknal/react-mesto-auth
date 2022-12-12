@@ -1,6 +1,6 @@
 import Card from "./Card.js";
 import { useDispatch, useSelector } from "react-redux";
-import { appLoaderSelector, cardsSelector, userSelector } from "redux/selectors.js";
+import { serviceCardsSelector, userSelector } from "redux/selectors.js";
 import { useLayoutEffect } from "react";
 import { popupService } from "../services/popupService.js";
 import { cardService } from "services/cardService.js";
@@ -12,7 +12,7 @@ function Main(props) {
     dispatch(cardService.getInitialCards())
   }, []);
 
-  const { serviceCards, userCards } = useSelector(cardsSelector);
+  const serviceCards = useSelector(serviceCardsSelector);
   return (
     <main className="content">
       <section className="profile">
@@ -52,7 +52,7 @@ function Main(props) {
               key={item._id}
             />
           );
-        })}
+        }).reverse()}
       </section>
     </main>
   );
