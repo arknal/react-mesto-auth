@@ -1,9 +1,13 @@
 import PopupWithForm from "./PopupWithForm";
-import { useState, useContext, useEffect } from "react";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserInfoStateSelector, userSelector } from "redux/selectors";
+import { userService } from "services/userService";
 
-function EditProfilePopup({ isOpen, onClose, ...props }) {
-  const currentUser = useContext(CurrentUserContext);
+function EditProfilePopup(props) {
+  const isLoading = useSelector(updateUserInfoStateSelector);
+  const currentUser = useSelector(userSelector);
+  const dispatch = useDispatch();
 
   const [name, setName] = useState(currentUser.name);
   const [description, setDescription] = useState(currentUser.about);
@@ -16,23 +20,18 @@ function EditProfilePopup({ isOpen, onClose, ...props }) {
   }
   function handleSubmit(e) {
     e.preventDefault();
-    props.onUpdateUser({
+    dispatch(userService.updateUserInfo({
       name,
       about: description,
-    });
+    }));
   }
-
-  useEffect(() => {
-    setName(currentUser.name);
-    setDescription(currentUser.about);
-  }, [isOpen]);
 
   return (
     <PopupWithForm
       title="Редактировать профиль"
-      name="profile-change"
-      onClose={onClose}
-      isOpen={isOpen}
+      name="edit-profile"
+      loadingState={isLoading}
+      loadingText="Обновление..."
       onSubmit={handleSubmit}
     >
       <div className="form__field">

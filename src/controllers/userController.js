@@ -1,47 +1,34 @@
 import { $authHost, $host } from '../utils/httpConfig';
 
-function login(props) {
-  return $host.post('/signin', props)
-    .then(getResponseData);
-}
+const userController = {
+  login(props) {
+    return $host.post('/signin', props).then(this.getResponseData);
+  },
 
-function register(props) {
-  return $host.post('/signup', props)
-    .then(getResponseData);
-}
+  register(props) {
+    return $host.post('/signup', props).then(this.getResponseData);
+  },
 
-function checkToken(token) {
-  return $authHost.get('users/me')
-    .then(getResponseData);
-}
+  getUserInfo() {
+    return $authHost.get('/users/me').then(this.getResponseData);
+  },
 
-function getUserInfo() {
-  return $authHost.get('/users/me')
-    .then(getResponseData);
-}
+  updateUserInfo(props) {
+    return $authHost.patch('/users/me', props).then(this.getResponseData);
+  },
 
-function updateUserInfo(props) {
-  return $authHost.patch('/users/me', props)
-    .then(getResponseData);
-}
+  updateUserAvatar(props) {
+    return $authHost
+      .patch('/users/me/avatar', props)
+      .then(this.getResponseData);
+  },
 
-function updateUserAvatar(props) {
-  return $authHost.patch('/users/me/avatar', props)
-    .then(getResponseData);
-}
-
-function getResponseData(res) {
-  if (!(res.statusText === 'OK')) {
-    return Promise.reject(res.data.message);
-  }
-  return res.data;
-}
-
-export const userController = {
-  login,
-  register,
-  checkToken,
-  getUserInfo,
-  updateUserAvatar,
-  updateUserInfo,
+  getResponseData(res) {
+    if (!(res.statusText === 'OK')) {
+      return Promise.reject(res.data.message);
+    }
+    return res.data;
+  },
 };
+
+export default userController;

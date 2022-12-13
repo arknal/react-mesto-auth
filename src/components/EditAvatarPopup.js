@@ -1,22 +1,26 @@
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserAvatarStateSelector } from "redux/selectors";
+import { closePopup } from "redux/store/app/app.slice";
+import { userService } from "services/userService";
 import PopupWithForm from "./PopupWithForm";
 
-function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, ...props }) {
+function EditAvatarPopup(props) {
   const avatarRef = useRef();
-
+  const dispatch = useDispatch();
+  const isLoading = useSelector(updateUserAvatarStateSelector);
   function handleSubmit(e) {
     e.preventDefault();
-    onUpdateAvatar({ avatar: avatarRef.current.value });
+    dispatch(userService.updateUserAvatar({ avatar: avatarRef.current.value }));
+    dispatch(closePopup());
+    avatarRef.current.value = ''
   }
-  useEffect(() => {
-    avatarRef.current.value = "";
-  }, [isOpen]);
   return (
     <PopupWithForm
       title="Обновить аватар"
-      name="avatar-update"
-      isOpen={isOpen}
-      onClose={onClose}
+      name="edit-avatar"
+      loadingState={isLoading}
+      loadingText="Обновление..."
       onSubmit={handleSubmit}
     >
       <div className="form__field">
