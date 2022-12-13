@@ -9,6 +9,7 @@ import { useLayoutEffect } from 'react';
 import { popupService } from '../services/popupService.js';
 import { cardService } from 'services/cardService.js';
 import Loader from './Loader.js';
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 
 function Main(props) {
   const info = useSelector(userSelector);
@@ -47,13 +48,43 @@ function Main(props) {
             onClick={() => popupService.showAddPlacePopup(dispatch)}
           />
         </section>
-        <section className='gallery' ariadiv='Секция с картинками'>
-          {serviceCards
-            .map((item) => {
-              return <Card {...item} key={item._id} />;
-            })
-            .reverse()}
-        </section>
+        <Tabs variant='unstyled' marginTop='50px'>
+          <TabList>
+            <Tab
+              color='#fff'
+              borderBottom='2px solid transparent'
+              fontSize='18px'
+              _hover={{ opacity: '.8' }}
+              _selected={{ borderBottom: '2px solid #fff' }}
+            >
+              Лента
+            </Tab>
+            <Tab
+              color='#fff'
+              fontSize='18px'
+              borderBottom='2px solid transparent'
+              _hover={{ opacity: '.8' }}
+              _selected={{ borderBottom: '2px solid #fff' }}
+            >
+              Мои карточки
+            </Tab>
+          </TabList>
+
+          <TabPanels>
+            <TabPanel>
+              <section className='gallery' ariadiv='Секция с картинками'>
+                {serviceCards
+                  .map((item) => {
+                    return <Card {...item} key={item._id} />;
+                  })
+                  .reverse()}
+              </section>
+            </TabPanel>
+            <TabPanel>
+              <p>two!</p>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
       </main>
     </>
   );
