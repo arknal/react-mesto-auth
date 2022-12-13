@@ -2,17 +2,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from 'redux/selectors';
 import { setCurrentCard } from 'redux/store/app/app.slice';
 import { cardService } from 'services/cardService';
+import { IconButton } from '@chakra-ui/react';
+import { GoComment } from 'react-icons/go';
+import { FcLike } from 'react-icons/fc';
+import LikeIcon from './LikeIcon';
 
-const Card = ({_id, ...props}) => {
+const Card = ({ _id, ...props }) => {
   const currentUser = useSelector(userSelector);
   const dispatch = useDispatch();
   const isOwn = currentUser._id === props.owner ? true : false;
   const isLiked = props.likes.some((account) => {
     return account._id === currentUser._id;
   });
-  const cardLikeButtonClassName = `card__like-btn ${
-    isLiked && 'card__like-btn_liked'
-  }`;
   function handleDelete() {
     dispatch(cardService.deleteCard(_id));
   }
@@ -29,9 +30,24 @@ const Card = ({_id, ...props}) => {
         {isOwn && (
           <button className='card__trash-btn' onClick={() => handleDelete()} />
         )}
-        <div className='flex-container flex-container_direction_column'>
-        <button className={cardLikeButtonClassName} type='button' onClick={() => dispatch(cardService.toggleLike({_id, isLiked}))} />
-          <span className='card__likes-counter'>{props.likes.length}</span>
+        <div className='flex-container'>
+          <div className='flex-container' style={{ marginRight: '10px' }}>
+            <button
+              onClick={() => dispatch(cardService.toggleLike({ _id, isLiked }))}
+              className='card__btn'
+            >
+              <LikeIcon isLiked={isLiked} />{' '}
+              <span className='card__likes-counter'>{props.likes.length}</span>
+            </button>
+          </div>
+          <div className='flex-container'>
+            <button
+              className='card__btn'
+            >
+              <GoComment size='22px' />
+              <span className='card__likes-counter'>0</span>
+            </button>
+          </div>
         </div>
       </div>
     </article>

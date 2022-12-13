@@ -1,0 +1,6 @@
+.popup__comment-block {
+  min-width: 25%;
+  background-color: #FFF;
+  box-sizing: border-box;
+  padding: 15px;
+}

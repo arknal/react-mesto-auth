@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   getUserInfoStateSelector,
   serviceCardsSelector,
+  userCardsSelector,
   userSelector,
 } from 'redux/selectors.js';
 import { useLayoutEffect } from 'react';
@@ -19,6 +20,7 @@ function Main(props) {
   }, []);
   const appLoader = useSelector(getUserInfoStateSelector);
   const serviceCards = useSelector(serviceCardsSelector);
+  const userCards = useSelector(userCardsSelector);
   return (
     <>
       {appLoader && <Loader />}
@@ -71,7 +73,7 @@ function Main(props) {
           </TabList>
 
           <TabPanels>
-            <TabPanel>
+            <TabPanel p='0'>
               <section className='gallery' ariadiv='Секция с картинками'>
                 {serviceCards
                   .map((item) => {
@@ -80,8 +82,14 @@ function Main(props) {
                   .reverse()}
               </section>
             </TabPanel>
-            <TabPanel>
-              <p>two!</p>
+            <TabPanel p='0'>
+                            <section className='gallery' ariadiv='Секция с картинками'>
+                {userCards
+                  .map((item) => {
+                    return <Card {...item} key={item._id} />;
+                  })
+                  .reverse()}
+              </section>
             </TabPanel>
           </TabPanels>
         </Tabs>

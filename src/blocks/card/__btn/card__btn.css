@@ -1,0 +1,13 @@
+.card__btn {
+  height: 32px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  width: 63px;
+  transition: background-color .2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.card__btn:hover {
+  background-color: #f8f8f8;
+}

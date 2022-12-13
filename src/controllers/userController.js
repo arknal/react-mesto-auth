@@ -12,7 +12,9 @@ const userController = {
   getUserInfo() {
     return $authHost.get('/users/me').then(this.getResponseData);
   },
-
+  getUserById(id) {
+    return $authHost.get(`/users/${id}`).then(this.getResponseData);
+  },
   updateUserInfo(props) {
     return $authHost.patch('/users/me', props).then(this.getResponseData);
   },
