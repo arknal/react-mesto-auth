@@ -2,9 +2,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from 'redux/selectors';
 import { setCurrentCard } from 'redux/store/app/app.slice';
 import { cardService } from 'services/cardService';
-import { GoComment } from 'react-icons/go';
+import { FaRegComment } from 'react-icons/fa';
 import LikeIcon from './LikeIcon';
-
+import { Image, Skeleton } from '@chakra-ui/react';
 const Card = ({ _id, ...props }) => {
   const currentUser = useSelector(userSelector);
   const dispatch = useDispatch();
@@ -17,11 +17,12 @@ const Card = ({ _id, ...props }) => {
   }
   return (
     <article className='card'>
-      <img
+      <Image
         src={props.link}
         alt={props.name}
         className='card__image'
-        onClick={() => dispatch(setCurrentCard(props))}
+        fallback={ <Skeleton className='card__image' />}
+        onClick={() => dispatch(setCurrentCard({...props, _id}))}
       />
       <div className='flex-container card__info'>
         <h2 className='card__title'>{props.name}</h2>
@@ -42,8 +43,8 @@ const Card = ({ _id, ...props }) => {
             <button
               className='card__btn'
             >
-              <GoComment size='22px' />
-              <span className='card__likes-counter'>0</span>
+              <FaRegComment size='21px' />
+              <span className='card__likes-counter'>{props.comments.length}</span>
             </button>
           </div>
         </div>

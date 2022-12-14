@@ -46,6 +46,24 @@ export const cardSlice = createSlice({
         state.serviceCards = state.serviceCards.map((c) =>
           c._id === action.payload.card._id ? action.payload.card : c
         );
+      })
+      .addCase(cardService.addComment.fulfilled, (state, action) => {
+        state.userCards = state.userCards.map((c) =>
+          c._id === action.payload.card._id ? action.payload.card : c
+        );
+
+        state.serviceCards = state.serviceCards.map((c) =>
+          c._id === action.payload.card._id ? action.payload.card : c
+        );
+      })
+      .addCase(cardService.deleteComment.fulfilled, (state, action) => {
+        state.userCards = state.userCards.map((c) =>
+          c._id === action.payload.card._id ? action.payload.card : c
+        );
+
+        state.serviceCards = state.serviceCards.map((c) =>
+          c._id === action.payload.card._id ? action.payload.card : c
+        );
       });
   },
 });

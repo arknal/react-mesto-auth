@@ -1,7 +1,13 @@
 .popup__comment-block {
-  min-width: 25%;
-  height: 100%;
-  background-color: #FFF;
+  min-width: 400px;
+  max-width: 400px;
+  background-color: #fff;
   box-sizing: border-box;
   padding: 15px;
+}
+@media (max-width: 1200px) {
+  .popup__comment-block {
+    min-width: 100%;
+    max-width: 100%;
+  }
 }

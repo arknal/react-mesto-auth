@@ -13,3 +13,4 @@ export const updateUserInfoStateSelector = (state) => state.user.isLoading.updat
 export const updateUserAvatarStateSelector = (state) => state.user.isLoading.updateUserAvatarState;
 
 export const currentCardSelector = (state) => state.app.currentCard;
+export const isCardLoadedSelector = (state) => state.app.isCardLoaded;

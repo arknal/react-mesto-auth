@@ -19,12 +19,17 @@ import ProtectedRoute from './ProtectedRoute.js';
 import InfoTooltip from './InfoTooltip';
 import { useDispatch, useSelector } from 'react-redux';
 import { userService } from 'services/userService';
-import { getUserInfoStateSelector, userSelector } from 'redux/selectors';
+import {
+  getUserInfoStateSelector,
+  isCardLoadedSelector,
+  userSelector,
+} from 'redux/selectors';
 
 function App() {
   const dispatch = useDispatch();
   const user = useSelector(userSelector);
   const appLoader = useSelector(getUserInfoStateSelector);
+  const isCardLoaded = useSelector(isCardLoadedSelector);
 
   useLayoutEffect(() => {
     dispatch(userService.getUserInfo());
@@ -32,7 +37,7 @@ function App() {
 
   return (
     <>
-      {appLoader && <Loader />} 
+      {appLoader && <Loader />}
       <Header />
       <Switch>
         <Route path='/sign-up'>
@@ -55,7 +60,7 @@ function App() {
             confirmBtnText='Да'
           />
 
-          <ImagePopup />
+          {isCardLoaded && <ImagePopup />}
         </ProtectedRoute>
         <Route path='*'>
           <Redirect to={user._id ? '/' : '/sign-in'} />

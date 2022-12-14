@@ -6,7 +6,7 @@ import {
   userCardsSelector,
   userSelector,
 } from 'redux/selectors.js';
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import { popupService } from '../services/popupService.js';
 import { cardService } from 'services/cardService.js';
 import Loader from './Loader.js';
@@ -15,7 +15,7 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 function Main(props) {
   const info = useSelector(userSelector);
   const dispatch = useDispatch();
-  useLayoutEffect(() => {
+  useEffect(() => {
     dispatch(cardService.getInitialCards());
   }, []);
   const appLoader = useSelector(getUserInfoStateSelector);

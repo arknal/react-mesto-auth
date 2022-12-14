@@ -1,0 +1,21 @@
+.popup__comment-wrapper {
+  width: 100%;
+  overflow-y: scroll !important;
+  scroll-behavior: smooth;
+  scrollbar-width: thin !important;
+}
+.popup__comment-wrapper::-webkit-scrollbar {
+  width: 8px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+.popup__comment-wrapper::-webkit-scrollbar-thumb {
+  width: 8px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 2px;
+}
+@media (max-width: 1200px) {
+  .popup__comment-wrapper {
+    overflow-y: hidden !important;
+  }
+}

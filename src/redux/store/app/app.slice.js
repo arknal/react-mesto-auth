@@ -4,7 +4,8 @@ export const appSlice = createSlice({
   name: 'app',
   initialState: {
     currentPopup: null,
-    currentCard: {}
+    currentCard: {},
+    isCardLoaded: false
   },
   reducers: {
     openPopup: (state, action) => {
@@ -14,6 +15,11 @@ export const appSlice = createSlice({
       state.currentPopup = null;
     },
     setCurrentCard: (state, action) => {
+      if (action.payload.name) {
+        state.isCardLoaded = true;
+      } else {
+        state.isCardLoaded = false;
+      }
       state.currentCard = action.payload;
     }
   },

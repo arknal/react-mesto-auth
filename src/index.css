@@ -51,6 +51,7 @@
 @import url(./blocks/popup/__container/popup__container.css);
 @import url(./blocks/popup/__content/popup__content.css);
 @import url(./blocks/popup/__comment-block/popup__comment-block.css);
+@import url(./blocks/popup/__comment-wrapper/popup__comment-wrapper.css);
 @import url(./blocks/popup/__card-img/popup__card-img.css);
 @import url(./blocks/popup/__card-title/popup__card-title.css);
 @import url(./blocks/card/__likes-counter/card__likes-counter.css);

@@ -1,16 +1,15 @@
 .popup__card-img {
-  width: 75%;
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   color: #FFF;
   box-sizing: border-box;
-  
+  max-width: 800px;
+  object-fit: contain;
 }
 @media (max-width: 1200px) {
   .popup__card-img  {
-    width: 100%;
+    max-width: 100%;
   }
 }

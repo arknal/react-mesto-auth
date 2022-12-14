@@ -1,17 +1,35 @@
 .popup__content {
   max-width: 1200px;
   display: flex;
-  align-items: center;
   box-sizing: border-box;
-  /* padding: 0 0 0 10px; */
   background-color: #333;
   border-radius: 5px;
+  min-height: 467px;
+  height: 70vh;
   overflow: hidden;
+  scrollbar-width: thin !important;
+}
+.popup__content::-webkit-scrollbar {
+  width: 8px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+.popup__content::-webkit-scrollbar-thumb {
+  width: 8px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 2px;
 }
 @media (max-width: 1200px) {
   .popup__content {
     flex-direction: column;
+    overflow-y: scroll;
+    max-height: 75vh;
     padding: 0;
     margin: 0 15px;
+  }
+}
+@media (max-width: 580px) {
+  .popup__content  {
+    margin: 0;
   }
 }
