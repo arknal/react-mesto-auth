@@ -2,9 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from 'redux/selectors';
 import { setCurrentCard } from 'redux/store/app/app.slice';
 import { cardService } from 'services/cardService';
-import { IconButton } from '@chakra-ui/react';
 import { GoComment } from 'react-icons/go';
-import { FcLike } from 'react-icons/fc';
 import LikeIcon from './LikeIcon';
 
 const Card = ({ _id, ...props }) => {
