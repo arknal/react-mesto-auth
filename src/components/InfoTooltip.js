@@ -1,17 +1,15 @@
-import success from "../images/success.png";
-import fail from "../images/fail.png";
+import success from "../shared/assets/images/success.png";
+import fail from "../shared/assets/images/fail.png";
 import { useDispatch, useSelector } from "react-redux";
 import { infotooltipSelector } from "redux/selectors";
 import { hide } from "redux/store/infotooltip/infotooltip.slice";
 
 function InfoTooltip() {
-
   const infotooltipState = useSelector(infotooltipSelector);
   const dispatch = useDispatch();
 
-
   function onClose() {
-    dispatch(hide())
+    dispatch(hide());
   }
 
   return (

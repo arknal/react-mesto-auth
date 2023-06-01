@@ -1,0 +1,77 @@
+@import 'src/shared/assets/styles/colors.scss';
+@import 'src/shared/assets/styles/breakpoints.scss';
+
+.header {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  height: 119px;
+
+  &__logo {
+    width: 142px;
+    height: 33px;
+  }
+  &__burger-menu {
+    display: none;
+    padding: 0;
+    overflow: hidden;
+    max-height: 0;
+  }
+  &__burger-menu_active {
+    max-height: 100vh;
+    padding: 40px 0;
+    border-bottom: 1px solid rgba(84, 84, 84, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  &__burger {
+    display: none;
+    width: 24px;
+    height: 21px;
+    background-image: url(../../shared/assets/images/burger.png);
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    transition: opacity .4s;
+    cursor: pointer;
+  }
+  &__burger:hover {
+    opacity: .6;
+  }
+  &__burger_active {
+    background-image: url(../../shared/assets/images/cross.svg);
+  }
+}
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0.7;
+  border-bottom: 1px solid #545454;
+}
+
+@media (max-width: $screen-laptops-min) {
+  .header {
+    padding: 0 30px;
+    height: 83px;
+
+    &__logo {
+      width: 104px;
+      height: 24px;
+    }
+  }
+}
+@media (max-width: $screen-tablets-min) {
+  .header {
+    &__burger {
+      display: block;
+    }
+  }
+}
+

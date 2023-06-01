@@ -1,0 +1,25 @@
+@import './normalize.css';
+@import '../fonts/fonts.css';
+@import 'colors.scss';
+@import 'breakpoints.scss';
+
+.page {
+  margin: 0 auto;
+  box-sizing: border-box;
+  background-color: $black;
+  max-width: 880px;
+  min-width: 320px;
+  font-family: 'Inter', sans-serif;
+}
+.flex-container {
+  display: flex;
+  align-items: center;
+}
+.flex-container_direction_column {
+  flex-direction: column;
+}
+@media (max-width: $screen-laptops-min) {
+  .content {
+    padding: 0 19px 0;
+  }
+}

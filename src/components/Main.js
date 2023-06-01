@@ -6,18 +6,19 @@ import {
   userCardsSelector,
   userSelector,
 } from 'redux/selectors.js';
-import { useEffect } from 'react';
 import { popupService } from '../services/popupService.js';
-import { cardService } from 'services/cardService.js';
 import Loader from './Loader.js';
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
+import {
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+} from '@chakra-ui/react';
 
 function Main(props) {
   const info = useSelector(userSelector);
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(cardService.getInitialCards());
-  }, []);
   const appLoader = useSelector(getUserInfoStateSelector);
   const serviceCards = useSelector(serviceCardsSelector);
   const userCards = useSelector(userCardsSelector);
@@ -83,7 +84,7 @@ function Main(props) {
               </section>
             </TabPanel>
             <TabPanel p='0'>
-                            <section className='gallery' ariadiv='Секция с картинками'>
+              <section className='gallery'>
                 {userCards
                   .map((item) => {
                     return <Card {...item} key={item._id} />;

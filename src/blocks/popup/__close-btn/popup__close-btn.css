@@ -2,7 +2,7 @@
   width: 32px;
   height: 32px;
   background-color: rgba(0, 0, 0, 0);
-  background-image: url(../../../images/cross.svg);
+  background-image: url(../../../shared/assets/images/cross.svg);
   background-position: center center;
   background-size: cover;
   border: none;

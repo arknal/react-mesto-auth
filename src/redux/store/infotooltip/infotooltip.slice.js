@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const infotooltipSlice = createSlice({
-  name: 'infotooltipSlice',
+export const tooltipSlice = createSlice({
+  name: 'tooltipSlice',
   initialState: {
     status: '',
     message: '',
@@ -18,6 +18,6 @@ export const infotooltipSlice = createSlice({
     }
   }
 })
-export const { show, hide } = infotooltipSlice.actions
+export const { show, hide } = tooltipSlice.actions
 
-export default infotooltipSlice.reducer
+export default tooltipSlice.reducer

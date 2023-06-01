@@ -1,9 +1,9 @@
-import { Route, Redirect } from "react-router-dom";
+import {Route, Navigate} from "react-router-dom";
 
 function ProtectedRoute({ children, ...props }) {
   return (
     <Route>
-      {props.loggedIn ? children : <Redirect to='/sign-in' />}
+      {props.loggedIn ? children : <Navigate to='/sign-in' />}
     </Route>
   );
 }

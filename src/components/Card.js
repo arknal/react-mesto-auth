@@ -16,35 +16,41 @@ const Card = ({ _id, ...props }) => {
     dispatch(cardService.deleteCard(_id));
   }
   return (
-    <article className='card'>
+    <article className="card">
       <Image
         src={props.link}
         alt={props.name}
-        className='card__image'
-        fallback={ <Skeleton className='card__image' />}
-        onClick={() => dispatch(setCurrentCard({...props, _id}))}
+        className="card__image"
+        fallback={<Skeleton className="card__image" />}
+        onClick={() => dispatch(setCurrentCard({ ...props, _id }))}
       />
-      <div className='flex-container card__info'>
-        <h2 className='card__title'>{props.name}</h2>
+      <div className="flex-container card__info">
+        <h2 className="card__title">{props.name}</h2>
         {isOwn && (
-          <button className='card__trash-btn' onClick={() => handleDelete()} />
+          <button className="card__trash-btn" onClick={() => handleDelete()} />
         )}
-        <div className='flex-container'>
-          <div className='flex-container' style={{ marginRight: '10px' }}>
+        <div className="flex-container">
+          <div className="flex-container" style={{ marginRight: '10px' }}>
             <button
               onClick={() => dispatch(cardService.toggleLike({ _id, isLiked }))}
-              className='card__btn'
+              className="card__btn"
             >
               <LikeIcon isLiked={isLiked} />{' '}
-              <span className='card__likes-counter'>{props.likes.length}</span>
+              <span className="card__likes-counter">{props.likes.length}</span>
             </button>
           </div>
-          <div className='flex-container'>
+          <div className="flex-container">
             <button
-              className='card__btn'
+              className="card__btn"
+              onClick={() => dispatch(setCurrentCard({ ...props, _id }))}
             >
-              <FaRegComment size='21px' />
-              <span className='card__likes-counter'>{props.comments.length}</span>
+              <FaRegComment size="21px" />
+              <span
+                className="card__likes-counter"
+                onClick={() => dispatch(setCurrentCard({ ...props, _id }))}
+              >
+                {props.comments.length}
+              </span>
             </button>
           </div>
         </div>

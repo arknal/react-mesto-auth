@@ -1,5 +1,5 @@
 import { useLayoutEffect } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import {Route, Switch, Navigate} from 'react-router-dom';
 
 import Header from './Header.js';
 import Main from './Main';
@@ -41,10 +41,10 @@ function App() {
       <Header />
       <Switch>
         <Route path='/sign-up'>
-          {!user._id ? <Register /> : <Redirect to='/' />}
+          {!user._id ? <Register /> : <Navigate to='/' />}
         </Route>
         <Route path='/sign-in'>
-          {!user._id ? <Login /> : <Redirect to='/' />}
+          {!user._id ? <Login /> : <Navigate to='/' />}
         </Route>
         <ProtectedRoute exact path='/' loggedIn={user._id}>
           <Main />
@@ -63,7 +63,7 @@ function App() {
           {isCardLoaded && <ImagePopup />}
         </ProtectedRoute>
         <Route path='*'>
-          <Redirect to={user._id ? '/' : '/sign-in'} />
+          <Navigate to={user._id ? '/' : '/sign-in'} />
         </Route>
       </Switch>
       <InfoTooltip />
